@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación de Español - Nivel A2 | Misión Minecraft</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for Gaming / Minecraft style -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom Minecraft Block & Windward Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b1d3a;
+            color: #ffffff;
+            touch-action: manipulation;
+        }
+
+        .font-pixel {
+            font-family: 'VT323', monospace;
+            letter-spacing: 1px;
+        }
+
+        .font-block {
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        /* Minecraft Pixel Pattern Background */
+        .bg-pixel-pattern {
+            background-color: #1b4d2e;
+            background-image: 
+                radial-gradient(#2d7d46 15%, transparent 16%),
+                radial-gradient(#153e24 15%, transparent 16%);
+            background-size: 32px 32px;
+            background-position: 0 0, 16px 16px;
+        }
+
+        .mc-border {
+            border: 4px solid #000;
+            box-shadow: inset -4px -4px 0px rgba(0,0,0,0.4), inset 4px 4px 0px rgba(255,255,255,0.3);
+        }
+
+        .mc-btn {
+            border: 3px solid #000;
+            box-shadow: inset -3px -3px 0px rgba(0,0,0,0.5), inset 3px 3px 0px rgba(255,255,255,0.4);
+            transition: all 0.1s ease;
+        }
+
+        .mc-btn:active {
+            box-shadow: inset 3px 3px 0px rgba(0,0,0,0.7);
+            transform: translateY(2px);
+        }
+
+        /* Card Flip Animation */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+
+        .transform-style-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+        }
+
+        .flip-card-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
+        /* Progress Bar Animation */
+        .progress-bar-fill {
+            transition: width 0.4s ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between select-none">
+
+    <!-- HEADER / NAVIGATION BAR -->
+    <header class="bg-[#08265D] border-b-4 border-[#00BBDC] p-3 md:p-4 text-white sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <!-- Brand & Level -->
+            <div class="flex items-center space-x-3">
+                <!-- Botón Volver al Inicio -->
+                <button onclick="goToWelcomeScreen()" class="mc-btn px-2.5 py-1.5 bg-[#0074BA] hover:bg-[#0866D9] text-white rounded-lg text-xs font-bold flex items-center gap-1.5" title="Volver al inicio">
+                    <i class="fa-solid fa-house text-yellow-300"></i>
+                    <span class="hidden sm:inline">Inicio</span>
+                </button>
+                <div class="w-10 h-10 bg-[#0074BA] border-2 border-white rounded-lg flex items-center justify-center font-bold text-xl text-yellow-300">
+                    <i class="fa-solid fa-cube"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg md:text-xl tracking-wide flex items-center gap-2">
+                        <span>ESPAÑOL A2</span>
+                        <span class="text-xs bg-[#00BBDC] text-[#08265D] px-2 py-0.5 rounded font-black">MINECRAFT EDITION</span>
+                    </h1>
+                    <p class="text-xs text-blue-200">Evaluación Interactiva • 12 años</p>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="flex items-center space-x-4 bg-[#05183b] px-4 py-2 rounded-xl border border-[#0866D9]">
+                <!-- Score -->
+                <div class="flex items-center space-x-1.5">
+                    <i class="fa-solid fa-[#00BBDC] fa-gem text-cyan-400"></i>
+                    <span class="text-xs text-slate-300 font-semibold">PUNTOS:</span>
+                    <span id="score-display" class="font-pixel text-2xl text-yellow-400 font-bold">0</span>
+                </div>
+                <!-- Badges Count -->
+                <div class="flex items-center space-x-1 text-amber-400 text-sm">
+                    <i id="badge-1" class="fa-solid fa-[#00BBDC] fa-shield-halved opacity-30" title="Dominio de Flashcards"></i>
+                    <i id="badge-2" class="fa-solid fa-[#00BBDC] fa-award opacity-30" title="Experto Gramatical"></i>
+                    <i id="badge-3" class="fa-solid fa-[#00BBDC] fa-scroll opacity-30" title="Gran Escritor"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar Container -->
+        <div class="max-w-5xl mx-auto mt-2 bg-slate-900 h-3 rounded-full overflow-hidden border border-slate-700">
+            <div id="overall-progress" class="bg-gradient-to-r from-[#0074BA] to-[#00BBDC] h-full progress-bar-fill w-0"></div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-4xl mx-auto w-full p-4 flex-grow flex items-center justify-center">
+
+        <!-- ==================== SCREEN 0: WELCOME & START ==================== -->
+        <section id="screen-welcome" class="w-full bg-pixel-pattern mc-border rounded-2xl p-6 md:p-10 text-center shadow-2xl relative overflow-hidden">
+            <!-- Background Overlay -->
+            <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+
+            <div class="relative z-10 max-w-2xl mx-auto space-y-6">
+                <!-- Character Avatar / Banner Frame -->
+                <div class="flex justify-center mb-2">
+                    <div class="relative group">
+                        <!-- Simulated Minecraft Skin Container -->
+                        <div class="w-28 h-28 md:w-36 md:h-36 bg-[#2563eb] border-4 border-white rounded-2xl overflow-hidden shadow-xl flex items-center justify-center bg-cover bg-center" style="background-image: url('https://placehold.co/200x200/1e293b/ffffff?text=ARTHUR+SKIN');">
+                            <i class="fa-solid fa-user-ninja text-6xl text-cyan-300"></i>
+                        </div>
+                        <span class="absolute -bottom-2 -right-2 bg-green-500 text-white font-bold text-xs px-2 py-1 rounded-full border border-black shadow">
+                            LVL A2
+                        </span>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <h2 class="font-pixel text-4xl md:text-6xl text-green-400 font-extrabold uppercase tracking-wider drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">
+                        ¡HOLA! ME LLAMO ARTHUR
+                    </h2>
+                    <p class="font-pixel text-2xl md:text-3xl text-yellow-300 drop-shadow">
+                        Completemos los siguientes niveles
+                    </p>
+                    <p class="text-sm md:text-base text-slate-200 italic max-w-md mx-auto pt-2">
+                        (Bienvenue ! Prépare-toi à réussir les 3 niveles : Vocabulaire, Grammaire et Écriture en espagnol).
+                    </p>
+                </div>
+
+                <!-- Info Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-left pt-4">
+                    <div class="bg-[#08265D]/90 p-3 rounded-xl border border-[#0866D9] flex items-center space-x-3">
+                        <span class="text-2xl text-cyan-400 font-pixel">01</span>
+                        <div>
+                            <h4 class="font-bold text-xs uppercase text-cyan-300">Nivel 1</h4>
+                            <p class="text-xs text-slate-300">Infinitivos & Conjugación "Yo"</p>
+                        </div>
+                    </div>
+                    <div class="bg-[#08265D]/90 p-3 rounded-xl border border-[#0866D9] flex items-center space-x-3">
+                        <span class="text-2xl text-cyan-400 font-pixel">02</span>
+                        <div>
+                            <h4 class="font-bold text-xs uppercase text-cyan-300">Nivel 2</h4>
+                            <p class="text-xs text-slate-300">Números & Nacionalidades</p>
+                        </div>
+                    </div>
+                    <div class="bg-[#08265D]/90 p-3 rounded-xl border border-[#0866D9] flex items-center space-x-3">
+                        <span class="text-2xl text-cyan-400 font-pixel">03</span>
+                        <div>
+                            <h4 class="font-bold text-xs uppercase text-cyan-300">Nivel 3</h4>
+                            <p class="text-xs text-slate-300">Writing Practice (Perfil)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="pt-4">
+                    <button id="btn-start-game" onclick="startGame()" class="mc-btn w-full md:w-auto px-10 py-4 bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-500 hover:to-emerald-400 text-white font-pixel text-2xl rounded-xl tracking-wider uppercase font-bold shadow-lg">
+                        <i class="fa-solid fa-play mr-2"></i> ¡Comenzar Misión!
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== EXPLANATION 1: FLASHCARDS GUILD ==================== -->
+        <section id="screen-intro-flashcards" class="w-full bg-[#08265D] border-4 border-[#00BBDC] rounded-2xl p-6 md:p-8 shadow-2xl hidden">
+            <div class="space-y-4">
+                <div class="flex items-center space-x-3 border-b border-blue-800 pb-3">
+                    <span class="font-pixel text-2xl text-yellow-300 bg-[#0074BA] px-3 py-1 rounded-lg">NIVEL 1</span>
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Explicación: Verbos e Infinitivos</h3>
+                        <p class="text-xs text-cyan-300">Explication de la structure des verbes avant les Flashcards.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#05183b] p-5 rounded-xl border border-[#0866D9] space-y-3 text-sm">
+                    <h4 class="font-bold text-yellow-300 flex items-center gap-2 text-base">
+                        <i class="fa-solid fa-book-open"></i> ¿Cómo pasar del Infinitivo a la respuesta con "Yo"?
+                    </h4>
+                    <p class="text-slate-200">
+                        En la tarjeta verás la acción o verbo <strong>sin conjugar (Infinitivo)</strong>. Al dar la vuelta, comprobarás la respuesta <strong>conjugada en primera persona (Yo)</strong>:
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+                        <div class="bg-[#08265D] p-3 rounded-lg border border-blue-700">
+                            <span class="text-xs text-cyan-300 font-bold block">1. Nombre</span>
+                            <span class="text-white font-semibold">Llamarse</span> ➔ <span class="text-yellow-300 font-bold">Yo me llamo</span>
+                            <p class="text-[11px] text-slate-300 italic mt-1">"Je m'appelle..."</p>
+                        </div>
+                        <div class="bg-[#08265D] p-3 rounded-lg border border-blue-700">
+                            <span class="text-xs text-cyan-300 font-bold block">2. Edad</span>
+                            <span class="text-white font-semibold">Tener</span> ➔ <span class="text-yellow-300 font-bold">Yo tengo (... años)</span>
+                            <p class="text-[11px] text-slate-300 italic mt-1">"J'ai ... ans"</p>
+                        </div>
+                        <div class="bg-[#08265D] p-3 rounded-lg border border-blue-700">
+                            <span class="text-xs text-cyan-300 font-bold block">3. Residencia</span>
+                            <span class="text-white font-semibold">Vivir</span> ➔ <span class="text-yellow-300 font-bold">Yo vivo en...</span>
+                            <p class="text-[11px] text-slate-300 italic mt-1">"J'habite à..."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end pt-2">
+                    <button onclick="startFlashcardsPractice()" class="mc-btn px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl text-sm flex items-center gap-2">
+                        ¡Entendido! Empezar Flashcards <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== MODULE 1: FLASHCARDS ==================== -->
+        <section id="screen-flashcards" class="w-full bg-[#08265D] border-4 border-[#0866D9] rounded-2xl p-5 md:p-8 shadow-2xl hidden">
+            <!-- Header Module -->
+            <div class="flex justify-between items-center mb-4 border-b border-blue-800 pb-3">
+                <div>
+                    <span class="text-xs font-bold bg-[#0074BA] text-cyan-200 px-2.5 py-1 rounded-full uppercase">Nivel 1: Flashcards</span>
+                    <h3 class="text-lg md:text-xl font-bold text-white mt-1">Recuperación Activa de Vocabulario</h3>
+                    <p class="text-xs text-cyan-300">Lis la piste en espagnol, pense à la réponse, retourne la carte et auto-évalue toi.</p>
+                </div>
+                <div class="text-right">
+                    <span id="flashcard-counter" class="font-pixel text-xl text-yellow-400">1 / 10</span>
+                </div>
+            </div>
+
+            <!-- Flashcard Container -->
+            <div class="perspective-1000 my-6 flex justify-center">
+                <div id="flashcard-element" onclick="flipFlashcard()" class="w-full max-w-md h-64 md:h-72 transform-style-3d cursor-pointer relative">
+                    
+                    <!-- FRONT OF CARD -->
+                    <div class="absolute inset-0 backface-hidden bg-gradient-to-br from-[#0074BA] to-[#08265D] border-4 border-[#00BBDC] rounded-2xl p-6 flex flex-col justify-between items-center text-center shadow-xl">
+                        <div class="w-full flex justify-between items-center text-xs text-cyan-300">
+                            <span><i class="fa-solid fa-eye"></i> Pista</span>
+                            <span class="italic text-slate-300">Haz clic para girar</span>
+                        </div>
+                        <div class="my-auto space-y-2">
+                            <p id="fc-front-prompt" class="text-xs text-blue-200 font-semibold uppercase tracking-wider"></p>
+                            <h4 id="fc-front-text" class="text-2xl md:text-4xl font-extrabold text-white"></h4>
+                            <p id="fc-front-french" class="text-xs text-cyan-200 italic mt-1"></p>
+                        </div>
+                        <div class="text-xs text-yellow-300 font-medium">
+                            <i class="fa-solid fa-rotate mr-1"></i> Toca para ver la respuesta
+                        </div>
+                    </div>
+
+                    <!-- BACK OF CARD -->
+                    <div class="absolute inset-0 backface-hidden rotate-y-180 bg-gradient-to-br from-emerald-800 to-green-900 border-4 border-green-400 rounded-2xl p-6 flex flex-col justify-between items-center text-center shadow-xl">
+                        <div class="w-full flex justify-between items-center text-xs text-green-300">
+                            <span><i class="fa-solid fa-circle-check"></i> Respuesta Correcta</span>
+                            <span>Solución</span>
+                        </div>
+                        <div class="my-auto space-y-2">
+                            <h4 id="fc-back-text" class="text-3xl md:text-4xl font-extrabold text-yellow-300"></h4>
+                            <p id="fc-back-note" class="text-xs md:text-sm text-green-100 italic"></p>
+                        </div>
+                        <div class="text-xs text-slate-300">
+                            ¿La sabías correctamente?
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Self Evaluation Controls -->
+            <div id="flashcard-controls" class="flex justify-center gap-4 mt-6 opacity-50 pointer-events-none transition-opacity duration-300">
+                <button onclick="handleFlashcardResult(false)" class="mc-btn flex-1 max-w-xs py-3 bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl text-sm md:text-base flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-xmark text-lg"></i> Necesito Repasar
+                </button>
+                <button onclick="handleFlashcardResult(true)" class="mc-btn flex-1 max-w-xs py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl text-sm md:text-base flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-check text-lg"></i> ¡Lo supó muy bien!
+                </button>
+            </div>
+        </section>
+
+
+        <!-- ==================== EXPLANATION 2: GRAMMAR & NUMBERS GUILD ==================== -->
+        <section id="screen-intro-grammar" class="w-full bg-[#08265D] border-4 border-[#00BBDC] rounded-2xl p-6 md:p-8 shadow-2xl hidden">
+            <div class="space-y-4">
+                <div class="flex items-center space-x-3 border-b border-blue-800 pb-3">
+                    <span class="font-pixel text-2xl text-yellow-300 bg-[#0074BA] px-3 py-1 rounded-lg">NIVEL 2</span>
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Explicación: Números y Nacionalidades</h3>
+                        <p class="text-xs text-cyan-300">Règles d'écriture des nombres et accord de genre des nationalités.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Números -->
+                    <div class="bg-[#05183b] p-4 rounded-xl border border-[#0866D9] space-y-2 text-xs">
+                        <h4 class="font-bold text-yellow-300 text-sm flex items-center gap-1.5 border-b border-blue-900 pb-2">
+                            <i class="fa-solid fa-hashtag"></i> Reglas de Ortografía: Números
+                        </h4>
+                        <ul class="space-y-2 text-slate-200 list-disc list-inside">
+                            <li>
+                                <strong class="text-white">Del 16 al 29:</strong> Se escriben en <span class="text-yellow-300 font-bold">UNA sola palabra</span>.
+                                <br><span class="italic text-cyan-300 pl-4 block">• 16 = dieciséis | 17 = diecisiete</span>
+                                <span class="italic text-cyan-300 pl-4 block">• 25 = veinticinco | 26 = veintiséis</span>
+                            </li>
+                            <li>
+                                <strong class="text-white">Del 31 al 50:</strong> Se escriben en <span class="text-yellow-300 font-bold">TRES palabras</span> separadas por "y".
+                                <br><span class="italic text-cyan-300 pl-4 block">• 34 = treinta y cuatro</span>
+                                <span class="italic text-cyan-300 pl-4 block">• 42 = cuarenta y dos</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Nacionalidades -->
+                    <div class="bg-[#05183b] p-4 rounded-xl border border-[#0866D9] space-y-2 text-xs">
+                        <h4 class="font-bold text-yellow-300 text-sm flex items-center gap-1.5 border-b border-blue-900 pb-2">
+                            <i class="fa-solid fa-venus-mars"></i> Concordancia de Género: Nacionalidades
+                        </h4>
+                        <ul class="space-y-2 text-slate-200 list-disc list-inside">
+                            <li>
+                                <strong class="text-white">Terminados en consonante:</strong> Añaden <em>-a</em> para el femenino.
+                                <br><span class="italic text-cyan-300 pl-4 block">• Masculino: Él es <strong>francés</strong>.</span>
+                                <span class="italic text-cyan-300 pl-4 block">• Femenino: Ella es <strong>francesa</strong>.</span>
+                            </li>
+                            <li>
+                                <strong class="text-white">Terminados en -o:</strong> Cambian a <em>-a</em> para el femenino.
+                                <br><span class="italic text-cyan-300 pl-4 block">• Masculino: Él es <strong>italiano</strong>.</span>
+                                <span class="italic text-cyan-300 pl-4 block">• Femenino: Ella es <strong>italiana</strong>.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flex justify-end pt-2">
+                    <button onclick="startGrammarPractice()" class="mc-btn px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl text-sm flex items-center gap-2">
+                        ¡Entendido! Empezar Gramática <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== MODULE 2: GRAMMAR EXERCISES ==================== -->
+        <section id="screen-grammar" class="w-full bg-[#08265D] border-4 border-[#0866D9] rounded-2xl p-5 md:p-8 shadow-2xl hidden">
+            <!-- Header Module -->
+            <div class="flex justify-between items-center mb-4 border-b border-blue-800 pb-3">
+                <div>
+                    <span class="text-xs font-bold bg-[#0074BA] text-cyan-200 px-2.5 py-1 rounded-full uppercase">Nivel 2: Gramática & Números</span>
+                    <h3 class="text-lg md:text-xl font-bold text-white mt-1">Desafíos de Estructura y Ortografía</h3>
+                    <p class="text-xs text-cyan-300">Choisis la bonne option ou écris le nombre correctement en lettres.</p>
+                </div>
+                <div class="text-right">
+                    <span id="grammar-counter" class="font-pixel text-xl text-yellow-400">1 / 6</span>
+                </div>
+            </div>
+
+            <!-- Exercise Container -->
+            <div class="space-y-6">
+                <!-- Question Box -->
+                <div class="bg-[#05183b] p-5 rounded-xl border border-[#0866D9]">
+                    <p id="grammar-french-instruction" class="text-xs text-cyan-300 italic mb-2"></p>
+                    <h4 id="grammar-question-text" class="text-lg md:text-xl font-bold text-white"></h4>
+                </div>
+
+                <!-- Input / Options Area -->
+                <div id="grammar-interaction-area" class="space-y-3">
+                    <!-- Dynamic insertion of Options or Input text field -->
+                </div>
+
+                <!-- Hint & Feedback Display -->
+                <div id="grammar-feedback-box" class="hidden p-4 rounded-xl border text-sm space-y-1">
+                    <p id="grammar-feedback-title" class="font-bold flex items-center gap-2"></p>
+                    <p id="grammar-feedback-detail" class="text-slate-200 text-xs md:text-sm"></p>
+                </div>
+
+                <!-- Action Controls -->
+                <div class="flex justify-between items-center pt-2">
+                    <button id="btn-grammar-hint" onclick="useGrammarHint()" class="text-xs text-cyan-300 hover:text-yellow-300 underline flex items-center gap-1">
+                        <i class="fa-solid fa-lightbulb"></i> ¿Necesitas una pista? (-20 pts)
+                    </button>
+
+                    <button id="btn-grammar-submit" onclick="submitGrammarAnswer()" class="mc-btn px-6 py-2.5 bg-[#0074BA] hover:bg-[#0866D9] text-white font-bold rounded-xl text-sm">
+                        Comprobar Respuesta <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== EXPLANATION 3: WRITING GUILD ==================== -->
+        <section id="screen-intro-writing" class="w-full bg-[#08265D] border-4 border-[#00BBDC] rounded-2xl p-6 md:p-8 shadow-2xl hidden">
+            <div class="space-y-4">
+                <div class="flex items-center space-x-3 border-b border-blue-800 pb-3">
+                    <span class="font-pixel text-2xl text-yellow-300 bg-[#0074BA] px-3 py-1 rounded-lg">NIVEL 3</span>
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Explicación: Guía de Redacción</h3>
+                        <p class="text-xs text-cyan-300">Instructions et structure requise pour ton paragraphe de présentation.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#05183b] p-5 rounded-xl border border-[#0866D9] space-y-3 text-xs">
+                    <h4 class="font-bold text-yellow-300 text-sm flex items-center gap-1.5">
+                        <i class="fa-solid fa-list-check"></i> Estructura del Párrafo (30 a 50 palabras):
+                    </h4>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 pt-1 text-center">
+                        <div class="bg-[#08265D] p-2.5 rounded-lg border border-blue-800">
+                            <span class="text-cyan-300 font-bold block">1. Saludo</span>
+                            <span class="text-white text-[11px]">¡Hola! / Buenos días</span>
+                        </div>
+                        <div class="bg-[#08265D] p-2.5 rounded-lg border border-blue-800">
+                            <span class="text-cyan-300 font-bold block">2. Nombre & Edad</span>
+                            <span class="text-white text-[11px]">Me llamo... / Tengo [número en letras] años</span>
+                        </div>
+                        <div class="bg-[#08265D] p-2.5 rounded-lg border border-blue-800">
+                            <span class="text-cyan-300 font-bold block">3. Origen & Residencia</span>
+                            <span class="text-white text-[11px]">Soy de... / Vivo en...</span>
+                        </div>
+                        <div class="bg-[#08265D] p-2.5 rounded-lg border border-blue-800">
+                            <span class="text-cyan-300 font-bold block">4. Idiomas</span>
+                            <span class="text-white text-[11px]">Hablo español y francés</span>
+                        </div>
+                    </div>
+
+                    <p class="text-slate-300 italic pt-2">
+                        <i class="fa-solid fa-triangle-exclamation text-yellow-400 mr-1"></i> <strong>¡Importante!</strong> Recuerda escribir tu edad utilizando el <u>número en letras</u> (ej. <em>veintiséis</em>, <em>quince</em>) y no dígitos.
+                    </p>
+                </div>
+
+                <div class="flex justify-end pt-2">
+                    <button onclick="startWritingPractice()" class="mc-btn px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl text-sm flex items-center gap-2">
+                        ¡Entendido! Empezar a Escribir <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== MODULE 3: WRITING PRACTICE ==================== -->
+        <section id="screen-writing" class="w-full bg-[#08265D] border-4 border-[#0866D9] rounded-2xl p-5 md:p-8 shadow-2xl hidden">
+            <!-- Header Module -->
+            <div class="flex justify-between items-center mb-4 border-b border-blue-800 pb-3">
+                <div>
+                    <span class="text-xs font-bold bg-[#0074BA] text-cyan-200 px-2.5 py-1 rounded-full uppercase">Nivel 3: Producción Escrita</span>
+                    <h3 class="text-lg md:text-xl font-bold text-white mt-1">Perfil Personal Escolar</h3>
+                    <p class="text-xs text-cyan-300">Présente-toi dans le club d'échange (nom, âge en lettres, nationalité, résidence).</p>
+                </div>
+                <div class="text-right">
+                    <span class="font-pixel text-xl text-yellow-400">30 - 50 palabras</span>
+                </div>
+            </div>
+
+            <!-- Scaffold / Help Bank -->
+            <div class="bg-[#05183b] p-4 rounded-xl border border-[#0866D9] mb-4 text-xs space-y-2">
+                <p class="font-bold text-cyan-300"><i class="fa-solid fa-toolbox mr-1"></i> Banco de Ayuda (Clique pour insérer) :</p>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="insertWord('¡Hola!')" class="bg-[#08265D] hover:bg-[#0074BA] px-2.5 py-1 rounded border border-blue-500 text-white">¡Hola!</button>
+                    <button onclick="insertWord('Me llamo')" class="bg-[#08265D] hover:bg-[#0074BA] px-2.5 py-1 rounded border border-blue-500 text-white">Me llamo...</button>
+                    <button onclick="insertWord('Tengo')" class="bg-[#08265D] hover:bg-[#0074BA] px-2.5 py-1 rounded border border-blue-500 text-white">Tengo... años</button>
+                    <button onclick="insertWord('Soy de')" class="bg-[#08265D] hover:bg-[#0074BA] px-2.5 py-1 rounded border border-blue-500 text-white">Soy de...</button>
+                    <button onclick="insertWord('Vivo en')" class="bg-[#08265D] hover:bg-[#0074BA] px-2.5 py-1 rounded border border-blue-500 text-white">Vivo en...</button>
+                    <button onclick="insertWord('Hablo')" class="bg-[#08265D] hover:bg-[#0074BA] px-2.5 py-1 rounded border border-blue-500 text-white">Hablo...</button>
+                    <button onclick="insertWord('veintiséis')" class="bg-[#08265D] hover:bg-[#0074BA] px-2.5 py-1 rounded border border-blue-500 text-yellow-300">veintiséis</button>
+                    <button onclick="insertWord('quince')" class="bg-[#08265D] hover:bg-[#0074BA] px-2.5 py-1 rounded border border-blue-500 text-yellow-300">quince</button>
+                </div>
+            </div>
+
+            <!-- Writing Input Box -->
+            <div class="space-y-3">
+                <textarea id="writing-textarea" oninput="updateWritingStats()" rows="6" class="w-full bg-slate-900 border-2 border-[#00BBDC] rounded-xl p-4 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 font-mono text-sm" placeholder="¡Hola! Me llamo Arthur, tengo..."></textarea>
+                
+                <!-- Live Checklist and Word Counter -->
+                <div class="flex flex-wrap justify-between items-center text-xs text-slate-300 bg-slate-900/60 p-3 rounded-lg border border-slate-700 gap-2">
+                    <div class="flex items-center space-x-3">
+                        <span id="check-greeting" class="text-slate-500"><i class="fa-solid fa-circle-check"></i> Saludo</span>
+                        <span id="check-[#00BBDC] name" class="text-slate-500"><i class="fa-solid fa-circle-check"></i> Nombre</span>
+                        <span id="check-[#00BBDC] age" class="text-slate-500"><i class="fa-solid fa-circle-check"></i> Edad en letras</span>
+                        <span id="check-[#00BBDC] origin" class="text-slate-500"><i class="fa-solid fa-circle-check"></i> Nacionalidad/País</span>
+                    </div>
+                    <div>
+                        <span>Palabras: </span>
+                        <span id="word-count-display" class="font-bold text-yellow-400">0</span> / 50
+                    </div>
+                </div>
+            </div>
+
+            <!-- Direct Teacher Evaluation Section (Modal/Box) -->
+            <div class="mt-6 border-t border-blue-800 pt-4">
+                <h4 class="text-sm font-bold text-cyan-300 mb-2 flex items-center gap-1.5">
+                    <i class="fa-solid fa-[#00BBDC] fa-chalkboard-user"></i> Evaluación Docente en Vivo
+                </h4>
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-300 mb-1">Puntuación de Redacción (0 a 100):</label>
+                        <input type="number" id="teacher-score-input" min="0" max="100" value="100" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white font-pixel text-lg">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-300 mb-1">Comentarios / Feedback Docente:</label>
+                        <input type="text" id="teacher-[#00BBDC] feedback-input" placeholder="¡Excelente uso de las estructuras!" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-xs text-white">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <button onclick="finishWritingModule()" class="mc-btn px-8 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl text-sm flex items-center gap-2">
+                    Finalizar Evaluación <i class="fa-solid fa-flag-checkered"></i>
+                </button>
+            </div>
+        </section>
+
+
+        <!-- ==================== SCREEN 4: RESULTS & CERTIFICATE ==================== -->
+        <section id="screen-results" class="w-full bg-pixel-pattern mc-border rounded-2xl p-6 md:p-10 text-center shadow-2xl relative overflow-hidden hidden">
+            <div class="absolute inset-0 bg-black/50 backdrop-blur-[2px]"></div>
+
+            <div class="relative z-10 max-w-xl mx-auto space-y-6">
+                <!-- Trophy Icon -->
+                <div class="w-20 h-20 bg-yellow-400 text-slate-900 rounded-full flex items-center justify-center text-4xl mx-auto border-4 border-white shadow-lg animate-bounce">
+                    <i class="fa-solid fa-[#00BBDC] fa-trophy"></i>
+                </div>
+
+                <div>
+                    <h2 class="font-pixel text-4xl md:text-5xl text-yellow-300 uppercase">¡Misión Cumplida!</h2>
+                    <p class="text-sm text-slate-200 mt-1">Has completado la evaluación de Español A2</p>
+                </div>
+
+                <!-- Final Score Breakdown Card -->
+                <div class="bg-[#08265D]/95 border-2 border-[#00BBDC] rounded-xl p-5 text-left space-y-3">
+                    <div class="flex justify-between items-center border-b border-blue-700 pb-2">
+                        <span class="text-slate-300 text-sm">Puntuación Total Obtenida:</span>
+                        <span id="final-score" class="font-pixel text-3xl text-yellow-400 font-bold">0 pts</span>
+                    </div>
+
+                    <div class="space-y-1.5 text-xs">
+                        <div class="flex justify-between text-slate-300">
+                            <span>Flashcards (Recuperación):</span>
+                            <span id="score-fc-detail" class="text-cyan-300 font-bold">--</span>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span>Gramática & Números:</span>
+                            <span id="score-grammar-detail" class="text-cyan-300 font-bold">--</span>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span>Writing Practice (Docente):</span>
+                            <span id="score-writing-detail" class="text-cyan-300 font-bold">--</span>
+                        </div>
+                    </div>
+
+                    <!-- Badges Earned Summary -->
+                    <div class="pt-2 border-t border-blue-800">
+                        <p class="text-xs text-slate-400 mb-2">Insignias Desbloqueadas:</p>
+                        <div id="final-badges-list" class="flex gap-2">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metacognitive Reflection Question -->
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-700 text-left">
+                    <label class="block text-xs text-cyan-300 font-bold mb-1">Reflexión final (Auto-évaluation) :</label>
+                    <p class="text-xs text-slate-300 italic mb-2">¿Qué número o palabra te pareció más fácil de recordar hoy?</p>
+                    <input type="text" id="metacognitive-answer" placeholder="Escribe tu respuesta..." class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-xs text-white">
+                </div>
+
+                <!-- Restart Button -->
+                <div class="pt-2">
+                    <button onclick="restartEvaluation()" class="mc-btn px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-pixel text-lg rounded-xl">
+                        <i class="fa-solid fa-rotate-right mr-2"></i> Reiniciar Evaluación
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#05183b] text-center p-3 text-xs text-slate-400 border-t border-slate-800">
+        <p>© Evaluación Formativa de Español ELE A2 • Formato Minecraft • Instrucción con Apoyo en Francés</p>
+    </footer>
+
+
+        <!-- ==================== JAVASCRIPT CODE ==================== -->
+    <script>
+        /* ================= STATE MANAGEMENT ================= */
+        let state = {
+            score: 0,
+            currentModule: 0, // 0: Welcome, 1: Intro FC, 2: FC, 3: Intro Gram, 4: Gram, 5: Intro Write, 6: Write, 7: Results
+            
+            // Flashcards Data & Tracking
+            flashcardsQueue: [],
+            currentFcIndex: 0,
+            fcFlipped: false,
+            fcScorePoints: 0,
+            
+            // Grammar Data & Tracking
+            grammarIndex: 0,
+            grammarScorePoints: 0,
+            grammarHintUsed: false,
+
+            // Writing Data
+            writingScorePoints: 100,
+
+            // Badges
+            badges: {
+                fc: false,
+                grammar: false,
+                writing: false
+            }
+        };
+
+        /* ================= DATA SETS ================= */
+        const flashcardsData = [
+            { prompt: "Verbo (Infinitivo)", text: "Llamarse", french: "S'appeler (Infinitif)", note: "Conjugación con 'Yo': Yo me llamo", answer: "Yo me llamo" },
+            { prompt: "Verbo (Infinitivo - Edad)", text: "Tener", french: "Avoir (Infinitif)", note: "Conjugación con 'Yo': Yo tengo (... años)", answer: "Yo tengo" },
+            { prompt: "Verbo (Infinitivo - Residencia)", text: "Vivir", french: "Habiter (Infinitif)", note: "Conjugación con 'Yo': Yo vivo en...", answer: "Yo vivo" },
+            { prompt: "Número 15 (en letras)", text: "15", french: "Nombre 15 en lettres", note: "Se escribe con 'q'.", answer: "Quince" },
+            { prompt: "Número 16 (en letras)", text: "16", french: "Nombre 16 en lettres", note: "¡Atención! Lleva tilde en la 'e'.", answer: "Dieciséis" },
+            { prompt: "Número 25 (en letras)", text: "25", french: "Nombre 25 en lettres", note: "Se escribe en una sola palabra.", answer: "Veinticinco" },
+            { prompt: "Número 26 (en letras)", text: "26", french: "Nombre 26 en lettres", note: "Una sola palabra y con tilde en la 'e'.", answer: "Veintiséis" },
+            { prompt: "Número 34 (en letras)", text: "34", french: "Nombre 34 en lettres", note: "Desde el 31 se escribe separado con 'y'.", answer: "Treinta y cuatro" },
+            { prompt: "País: Francia", text: "Francia", french: "Pays (Nationalité)", note: "Conjugación/Gentilicio: Yo soy francés", answer: "Yo soy francés" },
+            { prompt: "País: Argelia", text: "Argelia", french: "Pays (Nationalité)", note: "Conjugación/Gentilicio: Yo soy argelino", answer: "Yo soy argelino" }
+        ];
+
+        const grammarData = [
+            {
+                french: "Sélectionne la bonne forme verbale pour le nom et l'âge :",
+                question: "Hola, yo _______ Arthur y _______ 16 años.",
+                type: "mcq",
+                options: ["tengo / me llamo", "me llamo / tengo", "soy / me llamo", "me llamo / vivo"],
+                correct: 1,
+                hint: "Primero dices tu nombre (llamar) y luego tus años (tener).",
+                explanation: "¡Correcto! Decimos 'Me llamo [Nombre]' y 'Tengo [Edad] años'."
+            },
+            {
+                french: "Écris le nombre 26 en lettres :",
+                question: "El hermano de Mateo tiene ___________ (26) años.",
+                type: "input",
+                correctAnswers: ["veintiséis", "veintiseis"],
+                hint: "Se escribe en una sola palabra empezando por 'veinti...'",
+                explanation: "¡Muy bien! 26 se escribe 'veintiséis' (junto y con tilde)."
+            },
+            {
+                french: "Choisis l'accord correct de nationalité :",
+                question: "Pierre es de Francia, él es ________. Giovanna es de Italia, ella es ________.",
+                type: "mcq",
+                options: ["francés / italiana", "francia / italia", "franceso / italiano", "francés / italiano"],
+                correct: 0,
+                hint: "Recuerda que la nacionalidad cambia de género (-o / -a).",
+                explanation: "¡Perfecto! 'Francés' para él y 'italiana' para ella."
+            },
+            {
+                french: "Quelle est l'orthographe correcte pour 17 ?",
+                question: "¿Cómo se escribe el número 17 en español?",
+                type: "mcq",
+                options: ["Diez y siete", "Diecisiete", "Diecisiete", "Deicisiete"],
+                correct: 1,
+                hint: "Se escribe unido comenzando con 'dieci...'",
+                explanation: "¡Exacto! 17 se escribe en una sola palabra: diecisiete."
+            },
+            {
+                french: "Écris le nombre 35 en lettres :",
+                question: "Mi tía vive en Italia y tiene ___________ (35) años.",
+                type: "input",
+                correctAnswers: ["treinta y cinco"],
+                hint: "A partir del 31 se escribe en tres palabras (___ y ___).",
+                explanation: "¡Excelente! 35 se escribe separado: 'treinta y cinco'."
+            },
+            {
+                french: "Sélectionne la bonne option (Origine et Verbe) :",
+                question: "Yo ________ en Laos, por eso soy ________.",
+                type: "mcq",
+                options: ["vivo / laosiano", "tengo / laosiano", "me llamo / laos", "soy / laosiano"],
+                correct: 0,
+                hint: "Usa el verbo vivir para el lugar de residencia.",
+                explanation: "¡Genial! 'Vivo' expresa residencia y 'laosiano' la nacionalidad."
+            }
+        ];
+
+        /* ================= INITIALIZATION ================= */
+        window.onload = function() {
+            updateScore(0);
+        };
+
+        function goToWelcomeScreen() {
+            state.currentModule = 0;
+            switchScreen('screen-welcome');
+            updateProgress();
+        }
+
+        function startGame() {
+            // Setup Flashcards Queue
+            state.flashcardsQueue = [...flashcardsData];
+            state.currentFcIndex = 0;
+            state.fcScorePoints = 0;
+
+            // Show Flashcards Explanation First
+            switchScreen('screen-intro-flashcards');
+            state.currentModule = 1;
+            updateProgress();
+        }
+
+        function startFlashcardsPractice() {
+            switchScreen('screen-flashcards');
+            renderFlashcard();
+        }
+
+        function startGrammarPractice() {
+            switchScreen('screen-grammar');
+            renderGrammarQuestion();
+        }
+
+        function startWritingPractice() {
+            switchScreen('screen-writing');
+        }
+
+        function switchScreen(screenId) {
+            const screens = [
+                'screen-welcome', 
+                'screen-intro-flashcards', 
+                'screen-flashcards', 
+                'screen-intro-grammar', 
+                'screen-grammar', 
+                'screen-intro-writing', 
+                'screen-writing', 
+                'screen-results'
+            ];
+            screens.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (id === screenId) {
+                        el.classList.remove('hidden');
+                    } else {
+                        el.classList.add('hidden');
+                    }
+                }
+            });
+        }
+
+        function updateScore(points) {
+            state.score += points;
+            document.getElementById('score-display').innerText = state.score;
+        }
+
+        function updateProgress() {
+            let percentage = 0;
+            if (state.currentModule === 1) {
+                percentage = Math.round(((flashcardsData.length - state.flashcardsQueue.length) / flashcardsData.length) * 33);
+            } else if (state.currentModule === 2) {
+                percentage = 33 + Math.round((state.grammarIndex / grammarData.length) * 33);
+            } else if (state.currentModule === 3) {
+                percentage = 80;
+            } else if (state.currentModule === 4) {
+                percentage = 100;
+            }
+            document.getElementById('overall-progress').style.width = percentage + '%';
+        }
+
+        function unlockBadge(badgeKey) {
+            state.badges[badgeKey] = true;
+            if (badgeKey === 'fc') {
+                document.getElementById('badge-1').classList.remove('opacity-30');
+            } else if (badgeKey === 'grammar') {
+                document.getElementById('badge-2').classList.remove('opacity-30');
+            } else if (badgeKey === 'writing') {
+                document.getElementById('badge-3').classList.remove('opacity-30');
+            }
+        }
+
+        /* ================= MODULE 1: FLASHCARDS LOGIC ================= */
+        function renderFlashcard() {
+            if (state.flashcardsQueue.length === 0) {
+                // Flashcards completed! -> Show Grammar Intro Next
+                unlockBadge('fc');
+                state.grammarIndex = 0;
+                switchScreen('screen-intro-grammar');
+                updateProgress();
+                return;
+            }
+
+            const current = state.flashcardsQueue[0];
+            state.fcFlipped = false;
+
+            // Reset Card UI Flip state
+            document.getElementById('flashcard-element').classList.remove('flip-card-flipped');
+            document.getElementById('flashcard-controls').classList.add('opacity-50', 'pointer-events-none');
+
+            // Set Content for Front (Shows infinitives/prompts without conjugated answers)
+            document.getElementById('fc-front-prompt').innerText = current.prompt;
+            document.getElementById('fc-front-text').innerText = current.text;
+            document.getElementById('fc-front-french').innerText = `(${current.french})`;
+
+            document.getElementById('fc-back-text').innerText = "...";
+            document.getElementById('fc-back-note').innerText = "";
+
+            // Counter Display
+            const total = flashcardsData.length;
+            const remaining = state.flashcardsQueue.length;
+            document.getElementById('flashcard-counter').innerText = `${total - remaining + 1} / ${total}`;
+        }
+
+        function flipFlashcard() {
+            if (!state.fcFlipped) {
+                const current = state.flashcardsQueue[0];
+                // Reveal the conjugated answer with "Yo" only when flipping
+                document.getElementById('fc-back-text').innerText = current.answer || current.text;
+                document.getElementById('fc-back-note').innerText = current.note;
+
+                document.getElementById('flashcard-element').classList.add('flip-card-flipped');
+                state.fcFlipped = true;
+                // Enable controls
+                document.getElementById('flashcard-controls').classList.remove('opacity-50', 'pointer-events-none');
+            }
+        }
+
+        function handleFlashcardResult(known) {
+            const currentItem = state.flashcardsQueue.shift();
+
+            if (known) {
+                updateScore(50);
+                state.fcScorePoints += 50;
+            } else {
+                // Re-insert at the end of queue for repetition
+                state.flashcardsQueue.push(currentItem);
+            }
+
+            updateProgress();
+            renderFlashcard();
+        }
+
+
+        /* ================= MODULE 2: GRAMMAR LOGIC ================= */
+        function renderGrammarQuestion() {
+            if (state.grammarIndex >= grammarData.length) {
+                // Grammar module completed! -> Show Writing Intro Next
+                unlockBadge('grammar');
+                switchScreen('screen-intro-writing');
+                updateProgress();
+                return;
+            }
+
+            const item = grammarData[state.grammarIndex];
+            state.grammarHintUsed = false;
+
+            // Header info
+            document.getElementById('grammar-counter').innerText = `${state.grammarIndex + 1} / ${grammarData.length}`;
+            document.getElementById('grammar-french-instruction').innerText = item.french;
+            document.getElementById('grammar-question-text').innerText = item.question;
+
+            // Hide Feedback box
+            const fbBox = document.getElementById('grammar-feedback-box');
+            fbBox.classList.add('hidden');
+
+            // Reset Hint Button
+            const hintBtn = document.getElementById('btn-grammar-hint');
+            hintBtn.classList.remove('opacity-50', 'pointer-events-none');
+
+            // Render Interaction Area
+            const container = document.getElementById('grammar-interaction-area');
+            container.innerHTML = '';
+
+            if (item.type === 'mcq') {
+                item.options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'grammar-opt-btn w-full text-left p-3.5 bg-slate-800 hover:bg-[#0074BA] border border-slate-700 rounded-xl text-sm font-medium transition flex items-center justify-between';
+                    btn.onclick = () => selectMcqOption(idx);
+                    btn.innerHTML = `<span>${opt}</span> <i class="fa-regular fa-circle text-slate-400"></i>`;
+                    container.appendChild(btn);
+                });
+                container.dataset.selected = "-1";
+            } else if (item.type === 'input') {
+                container.innerHTML = `
+                    <input type="text" id="grammar-text-input" placeholder="Escribe aquí en letras..." class="w-full bg-slate-900 border-2 border-cyan-500 rounded-xl p-3 text-white font-medium focus:outline-none text-base">
+                `;
+            }
+        }
+
+        function selectMcqOption(index) {
+            const container = document.getElementById('grammar-interaction-area');
+            container.dataset.selected = index;
+
+            const btns = container.querySelectorAll('.grammar-opt-btn');
+            btns.forEach((btn, idx) => {
+                if (idx === index) {
+                    btn.className = 'grammar-opt-btn w-full text-left p-3.5 bg-[#0074BA] border-2 border-cyan-300 rounded-xl text-sm font-bold text-white flex items-center justify-between shadow-md';
+                    btn.querySelector('i').className = 'fa-solid fa-circle-dot text-cyan-300';
+                } else {
+                    btn.className = 'grammar-opt-btn w-full text-left p-3.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-sm font-medium text-slate-300 flex items-center justify-between opacity-70';
+                    btn.querySelector('i').className = 'fa-regular fa-circle text-slate-500';
+                }
+            });
+        }
+
+        function useGrammarHint() {
+            if (state.grammarHintUsed) return;
+            const item = grammarData[state.grammarIndex];
+            alert("💡 Pista: " + item.hint);
+            state.grammarHintUsed = true;
+            document.getElementById('btn-grammar-hint').classList.add('opacity-50', 'pointer-events-none');
+        }
+
+        function submitGrammarAnswer() {
+            const item = grammarData[state.grammarIndex];
+            let isCorrect = false;
+
+            if (item.type === 'mcq') {
+                const selected = parseInt(document.getElementById('grammar-interaction-area').dataset.selected || "-1");
+                if (selected === -1) {
+                    alert("Por favor selecciona una opción antes de continuar.");
+                    return;
+                }
+                isCorrect = (selected === item.correct);
+            } else if (item.type === 'input') {
+                const inputVal = document.getElementById('grammar-text-input').value.trim().toLowerCase();
+                if (!inputVal) {
+                    alert("Por favor escribe tu respuesta.");
+                    return;
+                }
+                isCorrect = item.correctAnswers.includes(inputVal);
+            }
+
+            // Display Feedback
+            const fbBox = document.getElementById('grammar-feedback-box');
+            const fbTitle = document.getElementById('grammar-feedback-title');
+            const fbDetail = document.getElementById('grammar-feedback-detail');
+
+            fbBox.classList.remove('hidden', 'bg-green-950', 'border-green-600', 'bg-red-950', 'border-red-600');
+
+            if (isCorrect) {
+                fbBox.classList.add('bg-green-950', 'border-green-600');
+                fbTitle.className = 'font-bold flex items-center gap-2 text-green-300';
+                fbTitle.innerHTML = `<i class="fa-solid fa-circle-check"></i> ¡Excelente!`;
+                fbDetail.innerText = item.explanation;
+
+                let pts = state.grammarHintUsed ? 50 : 100;
+                updateScore(pts);
+                state.grammarScorePoints += pts;
+
+                // Auto advance after 2 seconds
+                setTimeout(() => {
+                    state.grammarIndex++;
+                    updateProgress();
+                    renderGrammarQuestion();
+                }, 2200);
+
+            } else {
+                fbBox.classList.add('bg-red-950', 'border-red-600');
+                fbTitle.className = 'font-bold flex items-center gap-2 text-red-300';
+                fbTitle.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Respuesta Incorrecta`;
+                fbDetail.innerText = `Revisa atentamente: ${item.hint}`;
+            }
+        }
+
+
+        /* ================= MODULE 3: WRITING LOGIC ================= */
+        function insertWord(word) {
+            const textarea = document.getElementById('writing-textarea');
+            textarea.value += (textarea.value ? ' ' : '') + word;
+            updateWritingStats();
+            textarea.focus();
+        }
+
+        function updateWritingStats() {
+            const text = document.getElementById('writing-textarea').value.trim();
+            const words = text ? text.split(/\s+/).length : 0;
+            document.getElementById('word-count-display').innerText = words;
+
+            const lower = text.toLowerCase();
+
+            // Checklists
+            toggleCheck('check-greeting', lower.includes('hola') || lower.includes('buenos días'));
+            toggleCheck('check-[#00BBDC] name', lower.includes('llamo') || lower.includes('nombre'));
+            toggleCheck('check-[#00BBDC] age', lower.includes('tengo') || lower.includes('años'));
+            toggleCheck('check-[#00BBDC] origin', lower.includes('soy de') || lower.includes('vivo en') || lower.includes('francés') || lower.includes('italiano'));
+        }
+
+        function toggleCheck(elementId, isValid) {
+            const el = document.getElementById(elementId);
+            if (isValid) {
+                el.className = 'text-green-400 font-bold';
+            } else {
+                el.className = 'text-slate-500';
+            }
+        }
+
+        function finishWritingModule() {
+            const text = document.getElementById('writing-textarea').value.trim();
+            if (!text) {
+                alert("Por favor escribe tu párrafo de presentación antes de finalizar.");
+                return;
+            }
+
+            // Get Teacher Score
+            const teacherScore = parseInt(document.getElementById('teacher-score-input').value) || 100;
+            state.writingScorePoints = teacherScore;
+            updateScore(teacherScore);
+
+            unlockBadge('writing');
+
+            // Show Final Screen
+            state.currentModule = 4;
+            switchScreen('screen-results');
+            updateProgress();
+            renderResultsScreen();
+        }
+
+
+        /* ================= SCREEN 4: RESULTS & SUMMARY ================= */
+        function renderResultsScreen() {
+            document.getElementById('final-score').innerText = state.score + ' pts';
+            document.getElementById('score-fc-detail').innerText = state.fcScorePoints + ' pts';
+            document.getElementById('score-grammar-detail').innerText = state.grammarScorePoints + ' pts';
+            document.getElementById('score-writing-detail').innerText = state.writingScorePoints + ' pts';
+
+            const badgesList = document.getElementById('final-badges-list');
+            badgesList.innerHTML = `
+                <span class="px-2.5 py-1 bg-yellow-400/20 text-yellow-300 border border-yellow-400 rounded-lg text-xs font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-[#00BBDC] fa-shield-halved"></i> Vocabulario (Flashcards)
+                </span>
+                <span class="px-2.5 py-1 bg-yellow-400/20 text-yellow-300 border border-yellow-400 rounded-lg text-xs font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-[#00BBDC] fa-award"></i> Gramática & Números
+                </span>
+                <span class="px-2.5 py-1 bg-yellow-400/20 text-yellow-300 border border-yellow-400 rounded-lg text-xs font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-[#00BBDC] fa-scroll"></i> Escritor Estrella
+                </span>
+            `;
+        }
+
+        function restartEvaluation() {
+            state.score = 0;
+            state.currentModule = 0;
+            document.getElementById('score-display').innerText = '0';
+            document.getElementById('writing-textarea').value = '';
+            switchScreen('screen-welcome');
+            updateProgress();
+        }
+    </script>
+</body>
+</html>
